@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>User's recipes</title>
+</head>
+<body>
+    <div class="content">
+        <!-- header -->
+        <div class="header d-flex justify-content-between">
+            <h1>My recipes</h1>
+            <div class="d-flex">
+                <a class="btn btn-primary" href="/dashboard">back to recipes</a>
+                <a class="btn btn-danger" href="/users/logout">logout</a>
+            </div>
+        </div>
+        <table class="table">
+            <thead class="text-warning">
+                <tr>
+                    <th>Recipe Name</th>
+                    <th>Under</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-light">
+                {% for one_recipe in logged_user.recipes %}
+                <tr>
+                    <td>{{ one_recipe.name }}</td>
+                    <td>{% if one_recipe.under ==  1%} Yes {% else %} No {% endif %}</td>
+                    <td>{{one_recipe.description}}</td>
+                    <td>{{one_recipe.date}}</td>
+                    <td>
+                    <a href="/recipes/{{one_recipe.id}}/view">view recipe</a>
+                    {% if one_recipe.user_id  == session['user_id']%}
+                    | <a href="/recipes/{{one_recipe.id}}/edit">Edit</a>
+                    | <a href="/recipes/{{one_recipe.id}}/delete">Delete</a>
+                    {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

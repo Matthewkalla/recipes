@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Welcome!</title>
+</head>
+<body>
+    {% for message in get_flashed_messages(category_filter=['wrong_user']) %}
+    <p class="text-danger">{{message}}</p>
+{% endfor %}
+    <div class="container mx-auto">
+        <div class="header d-flex justify-content-between">
+            <h1>Welcome, {{logged_user.first_name}}</h1>
+            <div class="d-flex">
+                <a class="btn btn-primary" href="/recipes/new">Create</a>
+                <a class="btn btn-success" href="/my_recipes">My recipes</a>
+                <a class="btn btn-danger" href="/users/logout">logout</a>
+            </div>
+        </div>
+        <p>All posted recipes:</p>
+        <table class="table">
+            <thead class="text-warning">
+                <tr>
+                    <th>Name</th>
+                    <th>Under</th>
+                    <th>Posted By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-light">
+                {% for one_recipe in all_recipes %}
+                <tr>
+                    <td>{{ one_recipe.name }}</td>
+                    <td>{% if one_recipe.under ==  1%} Yes {% else %} No {% endif %}</td>
+                    <td>{{one_recipe.creator.first_name}}</td>
+                    <td>
+                    <a href="/recipes/{{one_recipe.id}}/view">view recipe</a>
+                    {% if one_recipe.user_id  == session['user_id']%}
+                    | <a href="/recipes/{{one_recipe.id}}/edit">Edit</a>
+                    | <a href="/recipes/{{one_recipe.id}}/delete">Delete</a>
+                    {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

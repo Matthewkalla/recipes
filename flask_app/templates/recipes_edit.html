@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Edit Recipes</title>
+</head>
+<body>
+    <div class="container mx-auto">
+        <!-- the header -->
+        <div class="header d-flex justify-content-between">
+            <h1>Edit Recipe:</h1>
+            <div class="d-flex">
+                <a class="btn btn-primary" href="/dashboard">back to recipes</a>
+                <a class="btn btn-danger" href="/users/logout">logut</a>
+            </div>
+        </div>
+        <form action="/recipes/{{one_recipe.id}}/update" method="post">
+            <div class="row">
+                <div class="col-6">
+                    <!-- the form for name input -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" class="form-control" name="name" id="name" value="{{one_recipe.name}}">
+                        {% for message in get_flashed_messages(category_filter=['name']) %}
+                        <p class="text-danger">{{message}}</p>
+                    {% endfor %}
+                    </div>
+                    <!-- the name for description input -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea name="description" class="form-control" id="description" cols="30" rows="5">{{one_recipe.description}}</textarea>
+                        {% for message in get_flashed_messages(category_filter=['description']) %}
+                        <p class="text-danger">{{message}}</p>
+                    {% endfor %}
+                    </div>
+                    <!-- the name for instructions input -->
+                    <div class="mb-3">
+                        <label for="instructions" class="form-label">Instructions:</label>
+                        <textarea name="instructions" id="instructions" class="form-control" cols="30" rows="10">{{ one_recipe.instructions }}</textarea>
+                        {% for message in get_flashed_messages(category_filter=['instructions']) %}
+                        <p class="text-danger">{{message}}</p>
+                    {% endfor %}
+                    </div>
+                </div>
+                <!-- the place to updated the date -->
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date Cooked/Made:</label>
+                        <input type="date" name="date" id="date" value="{{one_recipe.date}}"></input>
+                        {% for message in get_flashed_messages(category_filter=['date']) %}
+                        <p class="text-danger">{{message}}</p>
+                    {% endfor %}
+                    </div>
+                    <!-- where to say if it can be cooked in under 30 minutes -->
+                    <div class="mb-3">
+                        <p>Under 30 minutes?</p>
+                        <label for="under">True</label>
+                        <input type="radio" name="under" id="true" value="1" {%if one_recipe.under == 1%} checked {% endif %}></input>
+                        <label for="false">False</label>
+                        <input type="radio" name="under" id="false" value="0"{%if one_recipe.under == 0%} checked {% endif %}></input>
+                    </div>
+                    {% for message in get_flashed_messages(category_filter=['time']) %}
+                    <p class="text-danger">{{message}}</p>
+                {% endfor %}
+                    <button class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
